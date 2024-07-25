@@ -1,3 +1,5 @@
+/* directive is a statement in source code that instructs the compiler to perform a specific operation during compilation. */
+/* this is telling the compilar to inject tailwinds base component and utility functions in global css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,4 +17,4 @@ input[type='number']::-webkit-inner-spin-button {
 input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+}  
