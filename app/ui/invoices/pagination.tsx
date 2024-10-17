@@ -4,17 +4,61 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Link from 'next/link';
 import { generatePagination } from '@/app/lib/utils';
+import { usePathname, useSearchParams } from 'next/navigation';
+//code like you have infinite time.
 
+// Note: in this project i am learning the fundamentals of nextjs not tailwind, that's why I don't want to create pagination component.
+// Second thing it takes lot of time, and the output is not efficient.
+// There I learnt that in the programming go with the logic instead of emotion.
+
+              // Programming, I am not afraid of you. I am going to chop you down and finish forever.
+              // Nothing to be feared in coding, it just teach you how to broken down the problem in to smaller steps. 
+              // and further broke down them in to micro steps. But it goanna take a lot of time.
+              // I am still not satisfied because I didn't do it at myself.
+              // But the fear is still not destroyed, because it take lot of time and hard work, that is not efficient.
+              // Start fast to become efficient.
 export default function Pagination({ totalPages }: { totalPages: number }) {
-  // NOTE: Uncomment this code in Chapter 11
+  // never fetch data in to the client component.
 
-  // const allPages = generatePagination(currentPage, totalPages);
+  // The pagination component
+  // The two parts of this component to be understood.
+  // first one is logic
+  // scond one is visual state.
+  // exploring the logic with steps.
+  // exploring the visual state with numbers.
+  // combine them.
 
+  //Nothing is complex if broken down into smaller steps. these steps are developed by visualization of what need to be done.
+  // this is way to simplify the things or problems. 
+  // Step 1: Show the numbers in the ui logically.
+  // Step 2: enable navigation for all of them.
+  // Step 3: Show the active state, 
+  // Step 4: If the state is active, or page is ... then disable navigation for them.
+  // Step 5: if the page is first or last then disable arrows according to it., if the page is single then this will automatically cover.
+
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  // Step 1: generate a squence of numbers, for diffrent cases.
+  // there are four conditions to generate a sequence of numbers.
+  // if the totalPages are smaller than or equal to 7 then return a series of numbers.
+  // if the currentPage is less than or equal to 3 then return [1,2,3,...,7,8]
+  // if the currentPage is greater than allPages-2 means among the last three pages [1,2,...,7,8,9]
+  // if the currentPage in between 4 to allPages-3 then show [1,..., currentPage-1, currentPage, currentPage+1, ..., totalPages]
+  const allPages = generatePagination(currentPage, totalPages);  
+
+
+  // creating the page url is most important part, it's something that nextjs want to teach me.
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  }
   return (
     <>
-      {/*  NOTE: Uncomment this code in Chapter 11 */}
 
-      {/* <div className="inline-flex">
+      <div className="inline-flex">
         <PaginationArrow
           direction="left"
           href={createPageURL(currentPage - 1)}
@@ -22,7 +66,10 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
         />
 
         <div className="flex -space-x-px">
+          {/* Step 2: get the numbers in the ui. */}
           {allPages.map((page, index) => {
+
+
             let position: 'first' | 'last' | 'single' | 'middle' | undefined;
 
             if (index === 0) position = 'first';
@@ -33,9 +80,13 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
             return (
               <PaginationNumber
                 key={page}
+                // this href is created for all the elements of the array. and it's for routing of page numbers.
                 href={createPageURL(page)}
+                // this is the page number
                 page={page}
+                // the position given for visual states.
                 position={position}
+                // Step 4: once the page is navigated then show active state.
                 isActive={currentPage === page}
               />
             );
@@ -47,7 +98,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
           href={createPageURL(currentPage + 1)}
           isDisabled={currentPage >= totalPages}
         />
-      </div> */}
+      </div>
     </>
   );
 }
@@ -63,6 +114,7 @@ function PaginationNumber({
   position?: 'first' | 'last' | 'middle' | 'single';
   isActive: boolean;
 }) {
+  // sub step of 5: show the ui for active or not active state.
   const className = clsx(
     'flex h-10 w-10 items-center justify-center text-sm border',
     {
@@ -74,9 +126,11 @@ function PaginationNumber({
     },
   );
 
+  // Step 5: if the page is active or ... then disable navigation for them.
   return isActive || position === 'middle' ? (
     <div className={className}>{page}</div>
   ) : (
+    // Step 3: Navigate to a page by clicking, 
     <Link href={href} className={className}>
       {page}
     </Link>

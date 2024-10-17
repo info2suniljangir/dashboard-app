@@ -29,6 +29,8 @@ import clsx from 'clsx';
 //   res.send('Users list');
 // });
 
+// Path is a segment of url that enable us to access specific resources on the server.
+
 // navigation: How to move aroud the application. it's an action of going from one route to another.
 // Nevigate to a route mean accessing to a diffrent route.
 // example: anchor tags or link component in next js.
